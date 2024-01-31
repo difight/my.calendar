@@ -1,7 +1,8 @@
 import 'dotenv/config'
 import pkg from 'telegraf'
 import userController from './controller/userController.js'
-import markupController from './controller/markupController.js';
+import markupController from './controller/markupController.js'
+import menuComponent from './components/menuComponent.js'
 
 
 const { Telegraf } = pkg;
@@ -15,6 +16,7 @@ bot.use(async (ctx, next) => {
 bot.catch((err, ctx) => {
   console.log(`Ooops, encountered an error for ${ctx.updateType}`, err)
 })
+bot.telegram.setMyCommands(menuComponent)
 bot.start(async (ctx) => {
   const user = await userController.createUser(ctx?.update?.message?.from)
   ctx.reply(`Добро пожаловать ${user.last_name} ${user.first_name}!`, markupController.welcomeMarkup())
