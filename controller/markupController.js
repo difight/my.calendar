@@ -1,14 +1,11 @@
 import pkg from 'telegraf';
 const { Markup } = pkg;
+import calendarComponent from "../components/calendarComponent.js"
 
 class MarkupController {
-  welcomeMarkup () {
-    return Markup.inlineKeyboard([
-      Markup.callbackButton('Coke', 'Coke'),
-      Markup.callbackButton('Dr Pepper', 'Dr Pepper', Math.random() > 0.5),
-      Markup.callbackButton('Pepsi', 'Pepsi')
-    ])
-    .extra()
+  calendarMarkup (chat_id, year = (new Date()).getFullYear(), month = (new Date()).getMonth()) {
+    let calendar = calendarComponent.viewCal(year, month, chat_id)
+    return calendar
   }
 }
 

@@ -9,7 +9,7 @@ class CalendarComponent {
    */
   viewCal(year, month, chat_id, cbq_id = null, message_id = null) {
     // получаем массив дней месяца
-    let dayLines = getDays(year, month);
+    let dayLines = this.getDays(year, month);
     // определим переданную дату
     let currentMonthDate = new Date(+year, +month);
     // дата предыдущего месяца
@@ -17,7 +17,7 @@ class CalendarComponent {
     // дата следующего месяца
     let nextMonthDate = (new Date((new Date(currentMonthDate)).setMonth(currentMonthDate.getMonth() + 1)))
     // определим параметры переданного месяца
-    let current_info = setBeforeZero(currentMonthDate.getMonth() + 1) + "-" + currentMonthDate.getFullYear();
+    let current_info = this.setBeforeZero(currentMonthDate.getMonth() + 1) + "-" + currentMonthDate.getFullYear();
     // определим кнопки
     let buttons = [];
     // первый ряд кнопок это навигация календаря
@@ -45,11 +45,11 @@ class CalendarComponent {
         buttons[buttons.length - 1].push({
           text: day,
           callback_data: day > 0
-            ? "info_" + setBeforeZero(day) + "-" + current_info
+            ? "info_" + this.setBeforeZero(day) + "-" + current_info
             : "inline"
         });
-      });
-    });
+      }, this);
+    }, this);
     // готовим данные
     let data = {
       chat_id: chat_id,
@@ -74,7 +74,7 @@ class CalendarComponent {
     // добавляем первую строку
     days[days.length] = [];
     // добавляем в первую строку пустые значения
-    for (let i = 0; i < getNumDayOfWeek(d); i++) {
+    for (let i = 0; i < this.getNumDayOfWeek(d); i++) {
       days[days.length - 1].push("-");
     }
     // выходим пока месяц не перешел на другой
@@ -82,7 +82,7 @@ class CalendarComponent {
       // добавляем в строку дни
       days[days.length - 1].push(d.getDate());
       // вс, последний день - перевод строки
-      if (getNumDayOfWeek(d) % 7 === 6) {
+      if (this.getNumDayOfWeek(d) % 7 === 6) {
         // добавляем новую строку
         days[days.length] = [];
       }
@@ -90,8 +90,8 @@ class CalendarComponent {
       d.setDate(d.getDate() + 1);
     }
     // дозаполняем последнюю строку пустыми значениями
-    if (getNumDayOfWeek(d) !== 0) {
-      for (let i = getNumDayOfWeek(d); i < 7; i++) {
+    if (this.getNumDayOfWeek(d) !== 0) {
+      for (let i = this.getNumDayOfWeek(d); i < 7; i++) {
         days[days.length - 1].push("-");
       }
     }
@@ -120,3 +120,5 @@ class CalendarComponent {
     return ("0" + (num)).slice(-2);
   }
 }
+
+export default new CalendarComponent()
